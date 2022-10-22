@@ -1,0 +1,22 @@
+{
+  "name": "trade_telegram_bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "telegram": "tsc && node public/telegram && echo 'Telegram server started!'",
+    "binance": "tsc && node public/binance"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^18.11.3",
+    "dotenv": "^16.0.3",
+    "node-binance-api": "^0.13.1",
+    "node-telegram-bot-api": "^0.59.0"
+  },
+  "devDependencies": {
+    "@types/node-telegram-bot-api": "^0.57.5"
+  }
+}
