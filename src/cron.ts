@@ -18,7 +18,7 @@ const writeBalance = async () => {
     readFileSync("./public/balancelogger.json", "utf-8")
   );
   balancelogger.push(balanceToSave);
-  console.log("Log is:", balancelogger);
+  console.log('Last balance:', balancelogger.slice(-1));
   writeFileSync(
     "./public/balancelogger.json",
     JSON.stringify(balancelogger),

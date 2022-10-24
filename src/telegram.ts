@@ -7,6 +7,7 @@ import { BinanceInfo } from "./binance";
 import format from "date-fns/format";
 import { readFileSync } from "fs";
 import { BalanceLoggerFile } from "./interfaces/balance";
+import { roundValue } from "./utils/rounder";
 
 const token = process.env.TELEGRAM_TOKEN;
 
@@ -94,16 +95,19 @@ LONG: \n${longMess}
     const todayBalance = balanceFile.filter(
       (el) => el.day === currentTime.day && el.month === currentTime.month
     );
-    console.log(todayBalance[0], todayBalance[-1]);
-    const message = `Профит за эти сутки:\nSHORT: $${
-      todayBalance.slice(-1)[0].short - todayBalance[0].short
-    }\nLONG: $${
-      todayBalance.slice(-1)[0].long - todayBalance[0].long
-    }\nВСЕГО: $${
-      todayBalance.slice(-1)[0].short -
-      todayBalance[0].short +
-      (todayBalance.slice(-1)[0].long - todayBalance[0].long)
-    }.`;
+
+    const dailyShortBalance =
+      todayBalance.slice(-1)[0].short - todayBalance[0].short;
+    const dailyLongBalance =
+      todayBalance.slice(-1)[0].long - todayBalance[0].long;
+
+    const message = `Профит за эти сутки:\nSHORT: $${roundValue(
+      dailyShortBalance,
+      2
+    )}\nLONG: $${roundValue(dailyLongBalance, 2)}\nВСЕГО: $${roundValue(
+      dailyLongBalance + dailyShortBalance,
+      2
+    )}.`;
 
     await bot.sendMessage(msg.chat.id, message);
   }
