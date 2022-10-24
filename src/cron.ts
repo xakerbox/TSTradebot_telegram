@@ -26,4 +26,4 @@ const writeBalance = async () => {
   );
 };
 
-var job = new CronJob("*/2 * * * * *", writeBalance, null, true, "Europe/Kiev");
+var job = new CronJob("*/5 * * * *", writeBalance, null, true, "Europe/Kiev");
