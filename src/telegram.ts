@@ -14,20 +14,24 @@ const chatIds = [165564370, 535043367]; // 535043367
 const bot = new TelegramBot(token, { polling: true });
 const binance = new BinanceInfo();
 
-const keyboard: KeyboardButton[] = [
-  {
-    text: "BALANCE",
-  },
-  {
-    text: "POSITIONS",
-  },
-  {
-    text: "TODAY PROFIT",
-  },
+const keyboard: KeyboardButton[][] = [
+  [
+    {
+      text: "BALANCE",
+    },
+    {
+      text: "POSITIONS",
+    },
+  ],
+  [
+    {
+      text: "TODAY PROFIT",
+    },
+  ],
 ];
 
 const keyboardFull: ReplyKeyboardMarkup = {
-  keyboard: [keyboard],
+  keyboard: keyboard,
 };
 
 bot.setMyCommands([
