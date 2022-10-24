@@ -4,6 +4,9 @@ import TelegramBot, {
 } from "node-telegram-bot-api";
 require("dotenv").config();
 import { BinanceInfo } from "./binance";
+import format from "date-fns/format";
+import { readFileSync } from "fs";
+import { BalanceLoggerFile } from "./interfaces/balance";
 
 const token = process.env.TELEGRAM_TOKEN;
 
@@ -17,6 +20,9 @@ const keyboard: KeyboardButton[] = [
   },
   {
     text: "POSITIONS",
+  },
+  {
+    text: "TODAY PROFIT",
   },
 ];
 
@@ -68,5 +74,33 @@ SHORT: \n${shortMess}
 LONG: \n${longMess}
   `;
     bot.sendMessage(msg.chat.id, message);
+  }
+
+  if (msg.text === "TODAY PROFIT") {
+    const timeNow = new Date();
+    const currentTime = {
+      day: format(timeNow, "dd"),
+      month: format(timeNow, "MM"),
+      hours: format(timeNow, "HH"),
+      minutes: format(timeNow, "mm"),
+    };
+    const balanceFile: BalanceLoggerFile[] = JSON.parse(
+      readFileSync("./public/balancelogger.json", "utf-8")
+    );
+    const todayBalance = balanceFile.filter(
+      (el) => el.day === currentTime.day && el.month === currentTime.month
+    );
+    console.log(todayBalance[0], todayBalance[-1]);
+    const message = `Профит за эти сутки:\nSHORT: $${
+      todayBalance.slice(-1)[0].short - todayBalance[0].short
+    }\nLONG: $${
+      todayBalance.slice(-1)[0].long - todayBalance[0].long
+    }\nВСЕГО: $${
+      todayBalance.slice(-1)[0].short -
+      todayBalance[0].short +
+      (todayBalance.slice(-1)[0].long - todayBalance[0].long)
+    }.`;
+
+    await bot.sendMessage(msg.chat.id, message);
   }
 });

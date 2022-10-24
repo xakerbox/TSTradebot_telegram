@@ -5,13 +5,16 @@
   "main": "index.js",
   "scripts": {
     "telegram": "tsc && node public/telegram && echo 'Telegram server started!'",
-    "binance": "tsc && node public/binance"
+    "binance": "tsc && node public/binance",
+    "cron": "tsc && node public/cron"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@types/node": "^18.11.3",
+    "cron": "^2.1.0",
+    "date-fns": "^2.29.3",
     "dotenv": "^16.0.3",
     "node-binance-api": "^0.13.1",
     "node-telegram-bot-api": "^0.59.0"

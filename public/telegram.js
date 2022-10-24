@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const node_telegram_bot_api_1 = __importDefault(require("node-telegram-bot-api"));
 require("dotenv").config();
 const binance_1 = require("./binance");
+const fs_1 = require("fs");
 const token = process.env.TELEGRAM_TOKEN;
 const chatIds = [165564370, 535043367]; // 535043367
 const bot = new node_telegram_bot_api_1.default(token, { polling: true });
@@ -53,19 +54,23 @@ LONG:\n   Баланс: $${balances.long.balance}\n   PNL: $${balances.long.pnl}
   `;
         bot.sendMessage(msg.chat.id, message);
     }
-    if (msg.text === 'POSITIONS') {
+    if (msg.text === "POSITIONS") {
         const positions = yield binance.getPositions();
         console.log(positions);
-        const longMess = positions.long.map(el => {
-            return `   ${el.qty, el.symbol}: summ $${el.notional}, pnl: $${el.pnl}\n`;
+        const longMess = positions.long.map((el) => {
+            return `   ${(el.qty, el.symbol)}: summ $${el.notional}, pnl: $${el.pnl}\n`;
         });
-        const shortMess = positions.short.map(el => {
-            return `   ${el.qty, el.symbol}: summ $${el.notional}, pnl: $${el.pnl}\n`;
+        const shortMess = positions.short.map((el) => {
+            return `   ${(el.qty, el.symbol)}: summ $${el.notional}, pnl: $${el.pnl}\n`;
         });
         const message = `
 SHORT: \n${shortMess}
 LONG: \n${longMess}
   `;
         bot.sendMessage(msg.chat.id, message);
+    }
+    if (msg.text === "TODAY PROFIT") {
+        const balanceFile = JSON.parse((0, fs_1.readFileSync)('./public/balancelogger.json', 'utf-8'));
+        balanceFile.filter;
     }
 }));
